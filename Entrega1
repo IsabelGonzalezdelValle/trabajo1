@@ -1,0 +1,146 @@
+#Trabajo 1: Medología Cuantitativa
+
+
+### 2. Instalar estos Paquetes 
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("tidyr")
+install.packages("mlogit")
+install.packages("stargazer")
+install.packages("rsq")
+install.packages("sjPlot")
+install.packages("dslabs")
+install.packages("ggpubr")
+install.packages("corrplot")
+
+### 2.1 Cargar desde la biblioteca estos Paquetes
+library(tidyverse)
+library(dplyr)
+library(plyr)
+library(tidyr)
+library(mlogit)
+library(stargazer)
+library(rsq)
+library(sjPlot)
+library(dslabs)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(haven)
+
+
+## 2. Encuesta CEP
+### 2.1 Link: https://www.cepchile.cl/cep/encuestas-cep/encuestas-2010-2021/estudio-nacional-de-opinion-publica-n-85-septiembre-2021
+
+library(haven)
+base_85 <- read_sav("C:/Users/isama/Dropbox/Posgrados/Magíster en Ciencias Sociales mención sociedad civil/2do semestre/Metodologia cuantitativa/encuesta_cep_ago2021/base_85.sav")
+View(base_85)
+
+## 3. Análisis descriptivo
+
+### 3.1 Frecuencias
+
+### Variable inicial: 
+
+table(base_85$confianza_6_f)
+
+table(base_85$confianza_6_n)
+
+table(base_85$confianza_6_x)
+
+table(base_85$interes_pol_2_a)
+
+table(base_85$interes_pol_2_h)
+
+table(base_85$interes_pol_2_c)
+
+
+
+### 3.1 Frecuencias porcentaje
+
+
+table_1 <- table(base_85$confianza_6_f)
+prop.table(table_1)
+
+
+table_2 <- table(base_85$confianza_6_n)
+prop.table(table_2)
+
+
+table_3 <- table(base_85$interes_pol_2_a)
+prop.table(table_3)
+
+
+table_4 <- table(base_85$interes_pol_2_h)
+prop.table(table_4)
+
+
+table_5 <- table(base_85$interes_pol_2_c)
+prop.table(table_5)
+
+table_6 <-table(base_85$interes_pol_1_b)
+prop.table(table_6)
+
+
+
+##Recodificación variable edad
+
+
+##as.numeric(as.character(f))
+
+base_85["Edad2"] <- as.numeric(as.character(base_85$edad)) 
+
+
+table(base_85$Edad2)
+
+
+base_85["edadrangos2"] <- as.numeric(as.character(base_85$edad))
+
+table(base_85$Edad2)
+
+base_85["edadrangos2"] = cut(base_85$`Edad2`, 
+                          c(18, 29, 40, 51, 62,73,Inf), c("18-28","29-39","40-50","51-61", "62-72","73<"), 
+                          include.lowest=TRUE)
+
+
+
+
+###Tablas de contingencia con porcentaje columnas y filas
+
+####EDADRANGOS
+
+sjt.xtab(base_85$interes_pol_1_b, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_1_bxedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_a, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_2_axedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_h, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_hxedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_c, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_cxedadrangos2.doc")
+
+
+###GSE
+
+sjt.xtab(base_85$interes_pol_1_b, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_1_bxgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_a, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_2_axgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_h, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_hxgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_c, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_cxgse.doc")
