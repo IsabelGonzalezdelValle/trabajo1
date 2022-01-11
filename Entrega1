@@ -43,11 +43,7 @@ View(base_85)
 
 ### Variable inicial: 
 
-table(base_85$confianza_6_f)
 
-table(base_85$confianza_6_n)
-
-table(base_85$confianza_6_x)
 
 table(base_85$interes_pol_2_a)
 
@@ -55,17 +51,13 @@ table(base_85$interes_pol_2_h)
 
 table(base_85$interes_pol_2_c)
 
+table(base_85$base_85$interes_pol_1_b)
+
 
 
 ### 3.1 Frecuencias porcentaje
 
 
-table_1 <- table(base_85$confianza_6_f)
-prop.table(table_1)
-
-
-table_2 <- table(base_85$confianza_6_n)
-prop.table(table_2)
 
 
 table_3 <- table(base_85$interes_pol_2_a)
