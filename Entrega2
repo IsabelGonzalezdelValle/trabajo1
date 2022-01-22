@@ -1,0 +1,193 @@
+#Trabajo 2: Medología Cuantitativa
+
+
+### 2. Instalar  Paquetes 
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("tidyr")
+install.packages("mlogit")
+install.packages("stargazer")
+install.packages("rsq")
+install.packages("sjPlot")
+install.packages("dslabs")
+install.packages("ggpubr")
+install.packages("corrplot")
+install.packages("car")
+
+### 2.1 Cargar Paquetes
+library(tidyverse)
+library(dplyr)
+library(plyr)
+library(tidyr)
+library(mlogit)
+library(stargazer)
+library(rsq)
+library(sjPlot)
+library(dslabs)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(haven)
+
+## 2. Encuesta CEP
+### 2.1 Link: https://www.cepchile.cl/cep/encuestas-cep/encuestas-2010-2021/estudio-nacional-de-opinion-publica-n-85-septiembre-2021
+
+library(haven)
+base_85 <- read_sav("C:/Users/isama/Dropbox/Posgrados/Magíster en Ciencias Sociales mención sociedad civil/2do semestre/Metodologia cuantitativa/encuesta_cep_ago2021/base_85.sav")
+View(base_85)
+
+## 3. Análisis descriptivo
+
+### 3.1 Frecuencias
+
+
+table(base_85$confianza_6_f)
+
+table(base_85$confianza_6_n)
+
+table(base_85$confianza_6_x)
+
+table(base_85$interes_pol_2_a)
+
+table(base_85$interes_pol_2_h)
+
+table(base_85$interes_pol_2_c)
+
+
+
+### 3.2 Frecuencias porcentaje
+
+
+table_1 <- table(base_85$confianza_6_f)
+prop.table(table_1)
+
+
+table_2 <- table(base_85$confianza_6_n)
+prop.table(table_2)
+
+
+table_3 <- table(base_85$interes_pol_2_a)
+prop.table(table_3)
+
+
+table_4 <- table(base_85$interes_pol_2_h)
+prop.table(table_4)
+
+
+table_5 <- table(base_85$interes_pol_2_c)
+prop.table(table_5)
+
+table_6 <-table(base_85$interes_pol_1_b)
+prop.table(table_6)
+
+
+
+## 4. Recodificación de Variables
+
+
+### 4.1 Recodificación variable edad
+
+
+####as.numeric(as.character(f))
+
+base_85["Edad2"] <- as.numeric(as.character(base_85$edad)) 
+
+
+table(base_85$Edad2)
+
+
+base_85["edadrangos2"] <- as.numeric(as.character(base_85$edad))
+
+table(base_85$Edad2)
+
+base_85["edadrangos2"] = cut(base_85$`Edad2`, 
+                          c(18, 29, 40, 51, 62,73,Inf), c("18-28","29-39","40-50","51-61", "62-72","73<"), 
+                          include.lowest=TRUE)
+
+
+### 4.2 Recodificar Variable interes_pol_1_b
+
+base_85$interes_pol_1_bdicotom<-ifelse(base_85$interes_pol_1_b=="5",1,0)
+table(base_85$interes_pol_1_bdicotom)
+
+## 5.Tablas de contingencia con porcentaje columnas y filas
+
+### 5.1 EDADRANGOS
+
+sjt.xtab(base_85$interes_pol_1_b, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_1_bxedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_a, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_2_axedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_h, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_hxedadrangos2.doc")
+
+sjt.xtab(base_85$interes_pol_2_c, #filas
+         base_85$edadrangos2, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_cxedadrangos2.doc")
+
+
+### 5.2 GSE
+
+sjt.xtab(base_85$interes_pol_1_b, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_1_bxgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_a, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T, file = "interes_pol_2_axgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_h, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_hxgse.doc")
+
+sjt.xtab(base_85$interes_pol_2_c, #filas
+         base_85$gse, #columnas
+         show.col.prc = T, show.row.prc = T,  file = "interes_pol_2_cxgse.doc")
+
+
+
+## 6. Correlación
+
+cor.test(as.numeric(base_85$interes_pol_1_b), as.numeric(base_85$gse), method=c("pearson", "kendall", "spearman"))
+
+cor.test(as.numeric(base_85$interes_pol_1_b), as.numeric(base_85$edad), method=c("pearson", "kendall", "spearman"))
+
+cor.test(as.numeric(base_85$interes_pol_1_b), as.numeric(base_85$sexo), method=c("pearson", "kendall", "spearman"))
+
+cor.test(as.numeric(base_85$interes_pol_1_b), as.numeric(base_85$zona_u_r), method=c("pearson", "kendall", "spearman"))
+
+
+## 7. Regresión Logística Binaria
+
+### 7.1 Variables Regresión Logística
+
+#### Variable dependiente interes_pol_1_b "Nada interesados"
+
+#### Variable Independiente  1: edadrangos2
+#### Variable Independiente  2: gse
+#### Variable Independiente  3: sexo
+#### Variable Independiente  4: zona_u_r
+
+
+
+modelo1 = glm(base_85$interes_pol_1_bdicotom ~ base_85$`edad` + 
+           base_85$gse + base_85$`sexo`,
+         data = base_85,
+         binomial())
+summary(modelo1)
+
+modelo2 = glm(base_85$interes_pol_1_bdicotom ~ base_85$`edad` + 
+           base_85$gse  + base_85$`sexo` + base_85$zona_u_r,
+         data = base_85,
+         binomial())
+summary(modelo2)
+
+# 17. Tabular Regresion Logistica Binaria de m5 y m6
+stargazer(modelo1,modelo2, title = "Modelos 1 y 2", align =TRUE, out = "modeloso.txt")
+
